@@ -39,7 +39,7 @@ def count_and_save_words(url):
         return {"error": errors}
 
     # text processing
-    raw = BeautifulSoup(r.text).get_text()
+    raw = BeautifulSoup(r.text, 'html.parser').get_text()
     nltk.data.path.append('./nltk_data/')  # set the path
     tokens = nltk.word_tokenize(raw)
     text = nltk.Text(tokens)
@@ -70,7 +70,7 @@ def count_and_save_words(url):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    return render_template('index-vuejs.html')
 
 
 @app.route('/start', methods=['POST'])
@@ -104,6 +104,10 @@ def get_results(job_key):
     else:
         return "Nay!", 202
 
+@app.route("/jobs", methods=['GET'])
+def get_jobs():
+    # return a list of job IDs from the queue
+    return jsonify(q.jobs)
 
 if __name__ == '__main__':
     app.run()

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bulma/0.3.1/css/bulma.css">
+  <link rel="stylesheet" href="../static/main-vue.css">
+  <title>Wordcount vuejs</title>
+  <script src="https://unpkg.com/vue@2.1.10/dist/vue.js" charset="utf-8"></script>
+  <script src="https://unpkg.com/vue-resource@1.1.2/dist/vue-resource.min.js" charset="utf-8"></script>
+</head>
+<body>
+  <div id="app">
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            Wordcount 3000
+          </h1>
+          <h2 class="subtitle">
+            with <strong>vuejs</strong>
+          </h2>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <form class="ff" v-on:submit.prevent="getResults" method="post">
+          <p class="control">
+            <input class="input" type="text" name="url" v-model="url" placeholder="Enter URL..." style="max-width: 300px;">
+          </p>
+          <p class="control">
+            <button class="button is-info" :class="{'is-loading': loading, 'is-disabled': loading}" type="submit">
+              ${ submitButtonText }
+            </button>
+          </p>
+        </form>
+        <br>
+        <article class="message is-danger" v-if="urlerror">
+          <div class="message-header">
+            <p>URL error</p>
+            <button class="delete" @click="dismiss"></button>
+          </div>
+          <div class="message-body">
+            There was an error submitting your URL.<br>
+            Please check to make sure it is valid before trying again.
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column">
+            <div class="heading">
+              <h1 class="title">Frequencies</h1>
+              <h2 class="subtitle">
+              </h2>
+            </div>
+            <table class="table is-striped">
+              <thead>
+                <tr>
+                  <th>Word</th>
+                  <th>Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(key, val) in wordcounts">
+                  <td>${ val }</td>
+                  <td>${ key }</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="column">
+            <div class="heading">
+              <h1 class="title">Chart</h1>
+              <h2 class="subtitle">
+              </h2>
+            </div>
+            <div id="main" style="width: 100%;height: 100%;min-height: 400px"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="heading">
+          <h1 class="title">Recent</h1>
+          <h2 class="subtitle">
+          </h2>
+        </div>
+        <table class="table is-striped">
+          <thead>
+            <tr>
+              <!-- <th>Create Time</th> -->
+              <th>URL</th>
+              <!-- <th>Job ID</th> -->
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in history">
+              <!-- <td>${ item.createTime }</td> -->
+              <td>${ item.url }</td>
+              <!-- <td>${ item.jobID }</td> -->
+              <td>
+                <a href="javascript:;" type="button" @click="resume(item.jobID)">resume</a>
+                <!-- <button class="button is-info" type="button" name="button" @click="resume(item.jobID, $event)">resume</button> -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script src="../static/echarts.common.min.js" charset="utf-8"></script>
+  <script src="../static/main-vue.js" charset="utf-8"></script>
+</body>
+</html>
